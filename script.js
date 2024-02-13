@@ -33,42 +33,49 @@ function addTask(text) {
     let firstUpperLetter = (str) => str.split('')[0].toUpperCase()+str.slice(1);
     arr.push({taskText: firstUpperLetter(text.trim()), id: taskCounter, isChecked: false});
     localStorage.setItem('task', JSON.stringify(arr));
-    const taskCheckbox = document.createElement('input');
-    taskCheckbox.className = "task__checkbox";
-    taskCheckbox.classList.add("visually-hidden");
-    taskCheckbox.setAttribute("type", "checkbox");
-    taskCheckbox.setAttribute("id", taskCounter);
 
-    const customCheckbox = document.createElement('span');
-    customCheckbox.className = "custom-checkbox";
-
-    const labelForCheckbox = document.createElement('label');
-    labelForCheckbox.className = "task__text";
-    labelForCheckbox.setAttribute("for", taskCounter);
-    labelForCheckbox.textContent = text;
+    const label = document.createElement('label');
+    label.innerHTML = `
+    <input type="checkbox" class="task__checkbox visually-hidden" id="${taskCounter}">
+    <span class="custom-checkbox"></span>
+    <p for="${taskCounter}" class="task__text">${text}</p>        
+    `;
 
     const deleteButton = document.createElement('button');
     deleteButton.className = "task__delete-btn";
     deleteButton.textContent = "❌";
 
     tasksList.append(task)
-    task.append(taskCheckbox, customCheckbox, labelForCheckbox, deleteButton)
+    task.append(label, deleteButton);
     taskInput.value = "";
 
-    labelForCheckbox.addEventListener('click', function() {
-        if(taskCheckbox.checked) {
-            labelForCheckbox.classList.add('checked')
-        } else {
-            labelForCheckbox.classList.remove('checked')
-        }
-    })
-    taskCheckbox.addEventListener('change', function() {
-        if(this.checked) {
-            labelForCheckbox.classList.add('checked')
-        } else {
-            labelForCheckbox.classList.remove('checked')
-        }
-    })
+    // const taskCheckbox = document.createElement('input');
+    // taskCheckbox.className = "task__checkbox";
+    // taskCheckbox.classList.add("visually-hidden");
+    // taskCheckbox.setAttribute("type", "checkbox");
+    // taskCheckbox.setAttribute("id", taskCounter);
+
+    // const customCheckbox = document.createElement('span');
+    // customCheckbox.className = "custom-checkbox";
+
+    // const labelForCheckbox = document.createElement('label');
+    // labelForCheckbox.className = "task__text";
+    // labelForCheckbox.setAttribute("for", taskCounter);
+    // labelForCheckbox.textContent = text;
+    // labelForCheckbox.innerHTML = `<span class="custom-checkbox"></span>`
+
+    const labelForCheckbox = document.querySelectorAll('.task__text');
+    const taskCheckbox = document.querySelectorAll('.task__checkbox');
+
+    for (let i = 0; i < labelForCheckbox.length; i++) {
+        labelForCheckbox[i].addEventListener('click', function() {
+            if(taskCheckbox[i].checked) {
+                labelForCheckbox[i].classList.toggle('checked')
+            } else {
+                labelForCheckbox[i].classList.toggle('checked')
+            }
+        })
+    }
 
     deleteButton.addEventListener('click', function() {
         task.remove();

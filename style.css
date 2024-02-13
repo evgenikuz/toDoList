@@ -80,6 +80,7 @@ form {
 }
 .task {
     display: flex;
+    justify-content: space-between;
 }
 .visually-hidden {
     position: absolute;
@@ -107,7 +108,6 @@ form {
     font-weight: 400;
     line-height: 21px;
     text-align: left;
-    width: 100%;
     cursor: pointer;
 }
 .checked {
