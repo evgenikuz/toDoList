@@ -31,12 +31,16 @@ function addTask(text) {
     task.className = "task";
     
     let firstUpperLetter = (str) => str.split('')[0].toUpperCase()+str.slice(1);
-    arr.push(firstUpperLetter(text.trim()));
-    localStorage.setItem('task', arr);
+    arr.push({taskText: firstUpperLetter(text.trim()), id: taskCounter, isChecked: false});
+    localStorage.setItem('task', JSON.stringify(arr));
     const taskCheckbox = document.createElement('input');
     taskCheckbox.className = "task__checkbox";
+    taskCheckbox.classList.add("visually-hidden");
     taskCheckbox.setAttribute("type", "checkbox");
     taskCheckbox.setAttribute("id", taskCounter);
+
+    const customCheckbox = document.createElement('span');
+    customCheckbox.className = "custom-checkbox";
 
     const labelForCheckbox = document.createElement('label');
     labelForCheckbox.className = "task__text";
@@ -48,7 +52,7 @@ function addTask(text) {
     deleteButton.textContent = "❌";
 
     tasksList.append(task)
-    task.append(taskCheckbox, labelForCheckbox, deleteButton)
+    task.append(taskCheckbox, customCheckbox, labelForCheckbox, deleteButton)
     taskInput.value = "";
 
     labelForCheckbox.addEventListener('click', function() {
@@ -68,6 +72,7 @@ function addTask(text) {
 
     deleteButton.addEventListener('click', function() {
         task.remove();
+        // localStorage.removeItem(task)
         taskCounter--;
         if (taskCounter === 0) {
             tasksList.classList.add('d-none');
@@ -78,14 +83,20 @@ function addTask(text) {
     deleteAll.addEventListener('click', function() {
         task.remove();
         taskCounter = 0;
-        localStorage.removeItem('task')
+        localStorage.clear();
         tasksList.classList.add('d-none');
         deleteBlock.classList.add('d-none');
     })
+
     deleteChecked.addEventListener('click', function() {
         localStorage.getItem('task');
         if(taskCheckbox.checked) {
-            taskCheckbox.getAttribute('id');
+            let toDeleteId = taskCheckbox.getAttribute('id');
+            let localStorageArray = JSON.parse(localStorage.task.split(','));
+            for(let el of localStorageArray) {
+// надо как-то найти айди и по нему удалить объект
+            }
+            localStorage.setItem('task', JSON.stringify(FilteredLocalStorageArray))
             task.remove()
             // taskCounter--;
         }
@@ -101,13 +112,13 @@ function addTask(text) {
     })
 }
 if(localStorage.task) {
-    let localStorageArray = localStorage.task.split(',');
+    let localStorageArray = JSON.parse(localStorage.task.split(','));
     if (taskCounter === 0) {
         tasksList.classList.remove('d-none');
         deleteBlock.classList.remove('d-none');
     }
     for(let el of localStorageArray) {
-        addTask(el);
+        addTask(el.taskText);
     }
 }
 

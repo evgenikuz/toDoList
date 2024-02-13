@@ -81,11 +81,28 @@ form {
 .task {
     display: flex;
 }
-.task__checkbox {
-    cursor: pointer;
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border:0;
+    padding: 0;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+.custom-checkbox {
+    position:absolute;
+    width: 16px;
+    height: 16px;
+    background-image: url('./checkbox.svg');
+    margin-top:2px;
+}
+.task__checkbox:checked + .custom-checkbox {
+    background-image: url('./checkboxSelected.svg');
 }
 .task__text {
-    margin-left: 16px;
+    margin-left: 32px;
     color: rgb(84, 89, 94);
     font-weight: 400;
     line-height: 21px;
