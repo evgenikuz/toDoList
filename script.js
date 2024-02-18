@@ -34,9 +34,9 @@ function addTask(text, isChecked = false) { //создание заданий
 
     task.innerHTML = `
     <label>
-        <input type="checkbox" class="task__checkbox visually-hidden" id="${taskCounter}">
+        <input type="checkbox" class="task__checkbox visually-hidden" id="${taskCounter}" ${isChecked ? 'checked' : ''}>
         <span class="custom-checkbox"></span>
-        <p class="task__text">${text}</p>        
+        <p class="task__text ${isChecked ? 'checked' : ''}">${text}</p>        
     </label>
     <button class="task__delete-btn">❌</button>`
     
@@ -51,10 +51,6 @@ if(localStorage.task) { // если существует local storage
     let localStorageArray = JSON.parse(localStorage.task.split(','));
     for(let el of localStorageArray) {
         addTask(el.taskText, el.isChecked);
-        if (el.isChecked) { // добавляем отмеченность в случае, если задание было отмечено до обновления
-            document.querySelector('.task__text').classList.add('checked');
-            document.querySelector('.task__checkbox').checked = true;
-        }
     }
 }
 
